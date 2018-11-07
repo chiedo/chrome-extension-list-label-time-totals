@@ -8,7 +8,7 @@ String.prototype.replaceAll = function(search, replacement) {
 $(document).ready(function(){
   setInterval(function(){
     $('.js-list-content').each(function(){
-      var labelRegex = /[0-9].(\s)*(minutes|minutes|min|m|hours|hour|h)/gi;
+      var labelRegex = /([0-9]+(\s)*(minutes|minute|min|m|hours|hour|h))/gi;
       var currentList = $(this);
       var listTitle = $(this).find('.list-header-name');
       var totalMinutes = 0;
