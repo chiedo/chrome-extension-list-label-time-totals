@@ -1,4 +1,4 @@
-# Trello List Time Totals
+# Trello List Label Time Totals
 
 For any list that ends with "Time:", this chrome extension will find all labels titled (Xm) up so you know how much time's worth of tasks you have in a given list.
 

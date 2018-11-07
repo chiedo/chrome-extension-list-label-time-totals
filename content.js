@@ -1,4 +1,4 @@
-console.log("Chrome Trello List Time Totals.");
+console.log("Trello List Label Time Totals.");
 
 $(document).ready(function(){
   console.dir($);
