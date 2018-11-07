@@ -6,46 +6,56 @@ String.prototype.replaceAll = function(search, replacement) {
 };
 
 $(document).ready(function(){
-  $('.js-list-content').each(function(){
-    var listTitle = $(this).find('.list-header-name');
-    var totalMinutes = 0;
-    if(listTitle.text().endsWith("Time:")) {
-      $(this).find('.card-label')
-        .each(function(){
-          var labelText = $(this).text()
-            
-          if(typeof labelText === 'string') {
-            labelText = labelText.replaceAll("\\s","");
+  setInterval(function(){
+    $('.js-list-content').each(function(){
+      var listTitle = $(this).find('.list-header-name');
+      var totalMinutes = 0;
 
-            if(
-              labelText.startsWith("(") &&
-              labelText.endsWith("m)")
-            ) {
-              // Convert minutes string into to int
-              var minutes = parseInt(labelText.replace("(", "").replace("m)",""));
-              totalMinutes += minutes;
+      if(listTitle.text().includes("Time:")) {
+        $(this).find('.card-label')
+          .each(function(){
+            var labelText = $(this).text()
+              
+            if(typeof labelText === 'string') {
+              labelText = labelText.replaceAll("\\s","");
+
+              if(
+                labelText.startsWith("(") &&
+                labelText.endsWith("m)")
+              ) {
+                // Convert minutes string into to int
+                var minutes = parseInt(labelText.replace("(", "").replace("m)",""));
+                totalMinutes += minutes;
+              }
             }
-          }
-        });
+          });
 
-      var finalHours = Math.floor(totalMinutes / 60);
-      var finalMinutes = totalMinutes % 60;
-      var finalString = "";
+        var finalHours = Math.floor(totalMinutes / 60);
+        var finalMinutes = totalMinutes % 60;
+        var finalString = "";
 
-      if(finalHours > 0) {
-        finalString += finalHours + "h "
+        if(finalHours > 0) {
+          finalString += finalHours + "h "
+        }
+
+        if(finalMinutes > 0) {
+          finalString += finalMinutes + "m "
+        }
+
+        if(finalString === "") {
+          finalString = "0m"
+        }
+
+        // Remove the old time string:
+        listTitle.text(listTitle.text().replace(/[0-9].*m/g, ""));
+        listTitle.text(listTitle.text().replace(/[0-9].*h/g, ""));
+        // Remove white space
+        listTitle.text(listTitle.text().trim());
+        
+        // Add the new time string
+        listTitle.text(listTitle.text() + " " + finalString);
       }
 
-      if(finalMinutes > 0) {
-        finalString += finalMinutes + "m "
-      }
-
-      if(finalString === "") {
-        finalString = "0m"
-      }
-
-      listTitle.text(listTitle.text() + " " + finalString);
-    }
-
-  });
+    });
+  }, 1000);
 });
