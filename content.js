@@ -8,32 +8,38 @@ String.prototype.replaceAll = function(search, replacement) {
 $(document).ready(function(){
   setInterval(function(){
     $('.js-list-content').each(function(){
-      var labelRegex = /([0-9]+(\s)*(minutes|minute|min|m|hours|hour|h))/gi;
+      var labelRegex = /([0-9|.]+(\s)*(minutes|minute|min|m|hours|hour|h))/gi;
       var currentList = $(this);
       var listTitle = $(this).find('.list-header-name');
       var totalMinutes = 0;
       var timeLabelCount = 0;
-
+      
       $(this).find('.card-label')
         .each(function(){
           var labelText = $(this).text()
-          
+          var timeLabelArray = labelText.match(labelRegex);
           // Do nothing if the label doesn't contain a time duration
-          if(labelText.match(labelRegex)) {
+          if(timeLabelArray) {
             timeLabelCount++;
             
-            if(typeof labelText === 'string') {
-              labelText = labelText.replaceAll("\\s","");
+            
+            var minutesRegex = /([0-9|.]+(\s)*(minutes|minute|min|m))/gi;
+            var hoursRegex = /([0-9|.]+(\s)*(hours|hour|h))/gi;
 
-              if(
-                labelText.startsWith("(") &&
-                labelText.endsWith("m)")
-              ) {
+            timeLabelArray.forEach(function(label){
+              if(label.match(minutesRegex)) {
                 // Convert minutes string into to int
-                var minutes = parseInt(labelText.replace("(", "").replace("m)",""));
+                var minutes = parseInt(label);
+                totalMinutes += minutes;
+              } else if(label.match(hoursRegex)) {
+                // Convert hours string into to int and then minutes
+                var hours = parseInt(label);
+                var minutes = hours*60;
                 totalMinutes += minutes;
               }
-            }
+
+            });
+
           }
         });
 

@@ -1,10 +1,11 @@
 # Trello List Label Time Totals
 
-This chrome extension will find all labels titled (Xm) and will add them up so you know how much time's worth of tasks you have in a given list.
+Add labels with time durations for each card on a given list and the total will be displayed at the top. I find this particularly helpful as I have a list of tasks for each day of the week and I often over-commit the free time I don't have.
 
 ## Getting started
 
-- For all cards on that list with a time impact, add a label titled (10m) or (100m) or (30m), etc.
+- Create labels with time increments as the text. eg. ("2h 30m", "60 minutes", etc )
+- For all cards on that list with a time label, the total expected time will be calculated and added to the top of the list
 
 ## Installation
 
