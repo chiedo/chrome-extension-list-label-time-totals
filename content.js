@@ -8,14 +8,20 @@ String.prototype.replaceAll = function(search, replacement) {
 $(document).ready(function(){
   setInterval(function(){
     $('.js-list-content').each(function(){
+      var labelRegex = /[0-9].(\s)*(minutes|minutes|min|m|hours|hour|h)/gi;
+      var currentList = $(this);
       var listTitle = $(this).find('.list-header-name');
       var totalMinutes = 0;
+      var timeLabelCount = 0;
 
-      if(listTitle.text().includes("Time:")) {
-        $(this).find('.card-label')
-          .each(function(){
-            var labelText = $(this).text()
-              
+      $(this).find('.card-label')
+        .each(function(){
+          var labelText = $(this).text()
+          
+          // Do nothing if the label doesn't contain a time duration
+          if(labelText.match(labelRegex)) {
+            timeLabelCount++;
+            
             if(typeof labelText === 'string') {
               labelText = labelText.replaceAll("\\s","");
 
@@ -28,8 +34,10 @@ $(document).ready(function(){
                 totalMinutes += minutes;
               }
             }
-          });
+          }
+        });
 
+      if(timeLabelCount > 0) {
         var finalHours = Math.floor(totalMinutes / 60);
         var finalMinutes = totalMinutes % 60;
         var finalString = "";
@@ -47,13 +55,10 @@ $(document).ready(function(){
         }
 
         // Remove the old time string:
-        listTitle.text(listTitle.text().replace(/[0-9].*m/g, ""));
-        listTitle.text(listTitle.text().replace(/[0-9].*h/g, ""));
-        // Remove white space
-        listTitle.text(listTitle.text().trim());
+        currentList.find(".list-label-time-total").remove();
         
         // Add the new time string
-        listTitle.text(listTitle.text() + " " + finalString);
+        listTitle.after( '<span class="list-label-time-total" style="padding-left:8px;">'+finalString+'</span>' );
       }
 
     });
