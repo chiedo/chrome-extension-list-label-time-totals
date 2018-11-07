@@ -42,6 +42,9 @@ $(document).ready(function(){
 
           }
         });
+      
+      // Remove the old time string
+      currentList.find(".list-label-time-total").remove();
 
       if(timeLabelCount > 0) {
         var finalHours = Math.floor(totalMinutes / 60);
@@ -59,9 +62,6 @@ $(document).ready(function(){
         if(finalString === "") {
           finalString = "0m"
         }
-
-        // Remove the old time string:
-        currentList.find(".list-label-time-total").remove();
         
         // Add the new time string
         listTitle.after( '<span class="list-label-time-total" style="padding-left:8px;">'+finalString+'</span>' );
